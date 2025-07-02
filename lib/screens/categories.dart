@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:meals/data/dummy_data.dart';
 import 'package:meals/models/meal.dart';
 import 'package:meals/widgets/category_grid_item.dart';
@@ -10,9 +9,11 @@ class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({
     super.key,
     required this.availableMeals,
+    required this.onSelectMeal,
   });
 
   final List<Meal> availableMeals;
+  final void Function(Meal) onSelectMeal;
 
   @override
   State<CategoriesScreen> createState() => _CategoriesScreenState();
@@ -52,9 +53,11 @@ class _CategoriesScreenState extends State<CategoriesScreen>
         builder: (ctx) => MealsScreen(
           title: category.title,
           meals: filteredMeals,
+          onSelectMeal: widget.onSelectMeal,
+          favoriteMeals: {},
         ),
       ),
-    ); // Navigator.push(context, route)
+    );
   }
 
   @override
@@ -70,14 +73,13 @@ class _CategoriesScreenState extends State<CategoriesScreen>
           mainAxisSpacing: 20,
         ),
         children: [
-          // availableCategories.map((category) => CategoryGridItem(category: category)).toList()
           for (final category in availableCategories)
             CategoryGridItem(
               category: category,
               onSelectCategory: () {
                 _selectCategory(context, category);
               },
-            )
+            ),
         ],
       ),
       builder: (context, child) => SlideTransition(

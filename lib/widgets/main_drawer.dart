@@ -1,12 +1,18 @@
+// main_drawer.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../providers/theme_provider.dart';
 
-class MainDrawer extends StatelessWidget {
+class MainDrawer extends ConsumerWidget {
   const MainDrawer({super.key, required this.onSelectScreen});
 
   final void Function(String identifier) onSelectScreen;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(themeModeProvider);
+    final isDarkMode = themeMode == ThemeMode.dark;
+
     return Drawer(
       child: Column(
         children: [
@@ -75,6 +81,24 @@ class MainDrawer extends StatelessWidget {
             onTap: () {
               onSelectScreen('filters');
             },
+          ),
+          const Divider(),
+          SwitchListTile(
+            title: Text(
+              'Dark Mode',
+              style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                    color: Theme.of(context).colorScheme.onBackground,
+                    fontSize: 20,
+                  ),
+            ),
+            value: isDarkMode,
+            onChanged: (value) {
+              ref.read(themeModeProvider.notifier).toggleTheme(value);
+            },
+            secondary: Icon(
+              isDarkMode ? Icons.dark_mode : Icons.light_mode,
+              color: Theme.of(context).colorScheme.onBackground,
+            ),
           ),
         ],
       ),

@@ -1,27 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:meals/screens/categories.dart';
 import 'package:meals/screens/filters.dart';
 import 'package:meals/screens/meals.dart';
 import 'package:meals/widgets/main_drawer.dart';
 import 'package:meals/providers/favorites_provider.dart';
 import 'package:meals/providers/filters_provider.dart';
-
-const kInitialFilters = {
-  Filter.glutenFree: false,
-  Filter.lactoseFree: false,
-  Filter.vegetarian: false,
-  Filter.vegan: false
-};
+import 'package:meals/models/meal.dart';
 
 class TabsScreen extends ConsumerStatefulWidget {
   const TabsScreen({super.key});
 
   @override
-  ConsumerState<TabsScreen> createState() {
-    return _TabsScreenState();
-  }
+  ConsumerState<TabsScreen> createState() => _TabsScreenState();
 }
 
 class _TabsScreenState extends ConsumerState<TabsScreen> {
@@ -44,12 +35,19 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
     }
   }
 
+  void _onSelectMeal(Meal meal) {
+    // Add your logic to handle meal selection (e.g., navigate to detail screen)
+    // For now, just print it
+    print('Selected Meal: ${meal.title}');
+  }
+
   @override
   Widget build(BuildContext context) {
     final availableMeals = ref.watch(filteredMealsProvider);
 
     Widget activePage = CategoriesScreen(
       availableMeals: availableMeals,
+      onSelectMeal: _onSelectMeal, // ✅ REQUIRED PARAMETER ADDED
     );
     var activePageTitle = 'Categories';
 
@@ -57,6 +55,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
       final favoriteMeals = ref.watch(favoriteMealsProvider);
       activePage = MealsScreen(
         meals: favoriteMeals,
+        onSelectMeal: _onSelectMeal, favoriteMeals: const {}, // ✅ Add here too!
       );
       activePageTitle = 'Your Favorites';
     }

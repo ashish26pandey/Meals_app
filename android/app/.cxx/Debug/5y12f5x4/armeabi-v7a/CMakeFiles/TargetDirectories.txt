@@ -1,0 +1,2 @@
+C:/Users/pande/Desktop/flutter_HLP_2024/meals_app/meals_app/android/app/.cxx/Debug/5y12f5x4/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/pande/Desktop/flutter_HLP_2024/meals_app/meals_app/android/app/.cxx/Debug/5y12f5x4/armeabi-v7a/CMakeFiles/rebuild_cache.dir
